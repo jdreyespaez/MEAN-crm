@@ -15,11 +15,15 @@
   				<input type="password" class="form-control" ng-model="login.loginData.password">
   			</div>
 
+        <div class="alert alert-danger" ng-if="login.error">
+          {{ login.error }}
+        </div>
+
   			<button type="submit" class="btn btn-block btn-primary">
   				<span ng-if="!login.processing">Login</span>
           <span ng-if="login.processing" class="spinner"><span class="glyphicon glyphicon-repeat"></span></span>  			</button>
         </button>
-        
+
   		</form>
   	</div>
 
