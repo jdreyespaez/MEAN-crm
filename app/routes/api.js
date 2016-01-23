@@ -22,18 +22,18 @@ module.exports = function(app, express) {
 
 	    // no user with that username was found
 	    if (!user) {
-	      res.json({ 
-	      	success: false, 
-	      	message: 'Authentication failed. User not found.' 
+	      res.json({
+	      	success: false,
+	      	message: 'Authentication failed. User not found.'
 	  		});
 	    } else if (user) {
 
 	      // check if password matches
 	      var validPassword = user.comparePassword(req.body.password);
 	      if (!validPassword) {
-	        res.json({ 
-	        	success: false, 
-	        	message: 'Authentication failed. Wrong password.' 
+	        res.json({
+	        	success: false,
+	        	message: 'Authentication failed. Wrong password.'
 	    		});
 	      } else {
 
@@ -52,7 +52,7 @@ module.exports = function(app, express) {
 	          message: 'Enjoy your token!',
 	          token: token
 	        });
-	      }   
+	      }
 
 	    }
 
@@ -71,32 +71,32 @@ module.exports = function(app, express) {
 	  if (token) {
 
 	    // verifies secret and checks exp
-	    jwt.verify(token, superSecret, function(err, decoded) {      
+	    jwt.verify(token, superSecret, function(err, decoded) {
 	      if (err)
-	        return res.json({ success: false, message: 'Failed to authenticate token.' });    
+	        return res.json({ success: false, message: 'Failed to authenticate token.' });
 	      else
 	        // if everything is good, save to request for use in other routes
-	        req.decoded = decoded;    
+	        req.decoded = decoded;
 	    });
 
 	  } else {
 
 	    // if there is no token
 	    // return an HTTP response of 403 (access forbidden) and an error message
-   	 	return res.status(403).send({ 
-   	 		success: false, 
-   	 		message: 'No token provided.' 
+   	 	return res.status(403).send({
+   	 		success: false,
+   	 		message: 'No token provided.'
    	 	});
-	    
+
 	  }
 
 	  next(); // make sure we go to the next routes and don't stop here
 	});
 
-	// test route to make sure everything is working 
+	// test route to make sure everything is working
 	// accessed at GET http://localhost:8080/api
 	apiRouter.get('/', function(req, res) {
-		res.json({ message: 'hooray! welcome to our api!' });	
+		res.json({ message: 'hooray! welcome to our api!' });
 	});
 
 	// on routes that end in /users
@@ -105,7 +105,7 @@ module.exports = function(app, express) {
 
 		// create a user (accessed at POST http://localhost:8080/users)
 		.post(function(req, res) {
-			
+
 			var user = new User();		// create a new instance of the User model
 			user.name = req.body.name;  // set the users name (comes from the request)
 			user.username = req.body.username;  // set the users username (comes from the request)
@@ -114,9 +114,9 @@ module.exports = function(app, express) {
 			user.save(function(err) {
 				if (err) {
 					// duplicate entry
-					if (err.code == 11000) 
+					if (err.code == 11000)
 						return res.json({ success: false, message: 'A user with that username already exists. '});
-					else 
+					else
 						return res.send(err);
 				}
 
